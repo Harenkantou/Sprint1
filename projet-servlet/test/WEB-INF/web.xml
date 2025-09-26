@@ -6,7 +6,7 @@
     
     <servlet>
         <servlet-name>FrontController</servlet-name>
-        <servlet-class>main.com.exemple.FrontController</servlet-class>
+        <servlet-class>main.java.com.exemple.FrontController</servlet-class>
     </servlet>
     
     <servlet-mapping>
