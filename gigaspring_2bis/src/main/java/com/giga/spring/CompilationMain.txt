@@ -1,0 +1,9 @@
+Compiler (Maven)
+mvn -DskipTests package
+
+java -cp target\classes com.giga.spring.Main
+
+java -cp target\classes com.giga.spring.Main com.giga.spring
+
+Lancer via Maven (Maven ajoute automatiquement les dépendances au classpath)
+mvn -DskipTests exec:java -Dexec.mainClass="com.giga.spring.Main" -Dexec.args="com.giga.spring"
