@@ -1,8 +1,8 @@
 package com.giga.spring.servlet;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.io.File;
 import java.lang.reflect.Method;
 import java.net.URL;
 import java.util.ArrayList;
@@ -11,13 +11,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.giga.spring.annotation.Url;
+
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-
-import com.giga.spring.annotation.Url;
 
 /**
  * This is the servlet that takes all incoming requests targeting the app - If

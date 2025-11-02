@@ -1,0 +1,5 @@
+# Created at 2025-10-19T20:16:35.837
+Boot Manifest-JAR contains absolute paths in classpath 'D:\S5\MrNaina\spring-like\gigaspring\Sprint2\target\test-classes'
+Hint: <argLine>-Djdk.net.URLClassPath.disableClassPathURLCheck=true</argLine>
+'other' has different root
+
