@@ -1,0 +1,40 @@
+la derniere fois avec sprint 4 => executer method, on a aussi pris la valeur de retour,
+ si c'est chaine de caractere ou String on a juste afficher
+ si c'est ModelAndView(MVC) => on a recuperer l'url 
+ 
+apres sprint 5 {
+    comemnt on va faire si depuis le controller du developper on va envoyer des données vers la vue du developper egalement
+
+    par exemple on a une methode listEmployee() {on l'evoie dans emp/list.jsp}
+    et dans la method du controller par exemple listEmployee ou n'importe qu'on 
+    prends la liste et on fais tous pour l'envoyer vers le jsp
+    
+    donc qu'est qu'on fait coté framework, les changements et quels sont les instructions ou directives données aux developpeurs
+    pour atteindre cet objectif
+
+    pour n'import quel objet qu'on peut envoyer vers la vue car c'est de controller qu'on choisit la vue, et c'est aussi dans le 
+    controller qu'on prepare les données pour la vue 
+ }
+
+
+Sprint 5 {
+    controller => donnée vue 
+    par exemple idealement afficher liste et l'url associer au controller qu'on appele aux navigateur et donc c'est directement le controller qui est executer et c'est par rapport aux
+    code de controller, est ce qu'il retourne une chaine de caractere(String) ou dans ModelView qu'il place les data et les données apres sont envoyés aux views
+
+    envoyer des données depuis controller vers vue 
+    diviser en 2 {
+       - valeur de retour, si chaine de caractere valeur de retour mais eventuellement peut avoir Object
+    }
+
+    on verifie quand on execute la methode, on identifie la methode a partir de l'url, on identifie classe et methode a partir de l'url et si on le voit dans Map on dit jusste qu'on connait
+    pas (404 not found) et si on trouve et qu'on sait la methode qu'on doit appeller et classe qui a la methode et associer avec url, on execute et on invoque dynamiquement et on recupere 
+    valeur de retour, si c'est type String, c'est avec printwriter qu'on l'affichera, si c'est type ModelView(ou ModelAndView), et dans la classe ModelView, on creer un attribut de n'importe quel
+    nom, avec un type "Map" et le Map a la clé => nom de variable(modele), valeur => object, et dans ModelAndView, on peut ajouter un methode utilitaire addObject(qui prend en params clé(nom de variable) et
+    Objet de type Objet) => juste ajouter dans HashMap
+    et on prends comme exemple => la methode listDepartement, on instance ModelAndView, on set url vers /dept/liste.jsp et apres on dit ModelView.addObject("listesDept", listesDept);
+    et dans dept/list.jsp, on recupere juste request.getAttribute("listesDept") et le nom c'est le nom qu'on a fait dans le addObject dans la methode
+
+    dans ModelView ou ModelAndView, y'avait deja un url dedans(attribut), on met Map<> data et string = clé et object = valeur
+    et c'est ca qu'on ajoute quand on ajoute des data dans controller, on peut ajouter une methode utilitaire addObject qui prends en params String pour pas directement manipuler le map dans le controller(faire map apres faire add)
+}

@@ -11,8 +11,8 @@ import com.giga.spring.mapping.RouteRegistry;
 import com.giga.spring.mapping.URLRoute;
 
 import jakarta.servlet.RequestDispatcher;
-import jakarta.servlet.ServletException;
 import jakarta.servlet.ServletConfig;
+import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -91,19 +91,60 @@ public class FrontServlet extends HttpServlet {
         try {
             // Extraire les paramètres de l'URL
             Map<String, String> urlParams = route.extractParams(path);
-            
-            // Ajouter les paramètres en tant qu'attributs de la requête
+
+            // Ajouter les paramètres en tant qu'attributs de la requête (pour JSPs et compatibilité)
             for (Map.Entry<String, String> entry : urlParams.entrySet()) {
                 req.setAttribute(entry.getKey(), entry.getValue());
             }
-            
+
             // Invoquer la méthode du contrôleur
             Method method = route.getMethod();
             Object controller = route.getController();
-            
-            // La méthode doit accepter (HttpServletRequest, HttpServletResponse)
-            method.invoke(controller, req, res);
-            
+
+            // Construire les arguments pour la méthode en mappant :
+            // - HttpServletRequest / HttpServletResponse
+            // - valeurs extraites de l'URL ({}), sinon request.getParameter(paramName)
+            java.lang.reflect.Parameter[] parameters = method.getParameters();
+            Object[] args = new Object[parameters.length];
+
+            for (int i = 0; i < parameters.length; i++) {
+                Class<?> pType = parameters[i].getType();
+
+                if (HttpServletRequest.class.isAssignableFrom(pType)) {
+                    args[i] = req;
+                    continue;
+                }
+
+                if (HttpServletResponse.class.isAssignableFrom(pType)) {
+                    args[i] = res;
+                    continue;
+                }
+
+                // essayer d'obtenir la valeur depuis les params d'URL (/{name})
+                String paramName = parameters[i].getName();
+                String stringValue = null;
+
+                if (urlParams.containsKey(paramName)) {
+                    stringValue = urlParams.get(paramName);
+                } else {
+                    // fallback to request parameter (form/query)
+                    stringValue = req.getParameter(paramName);
+                }
+
+                if (stringValue != null) {
+                    args[i] = convertStringToType(stringValue, pType);
+                } else {
+                    // pas de valeur trouvée -> null pour objets, valeur par défaut pour primitifs
+                    if (pType.isPrimitive()) {
+                        args[i] = getDefaultValueForPrimitive(pType);
+                    } else {
+                        args[i] = null;
+                    }
+                }
+            }
+
+            method.invoke(controller, args);
+
         } catch (Exception e) {
             System.err.println("Erreur lors de l'invocation du contrôleur: " + e.getMessage());
             e.printStackTrace();
@@ -119,6 +160,38 @@ public class FrontServlet extends HttpServlet {
                 out.println("</body></html>");
             }
         }
+    }
+
+    private Object convertStringToType(String value, Class<?> targetType) {
+        if (targetType == String.class) return value;
+        if (targetType == int.class || targetType == Integer.class) return Integer.parseInt(value);
+        if (targetType == long.class || targetType == Long.class) return Long.parseLong(value);
+        if (targetType == double.class || targetType == Double.class) return Double.parseDouble(value);
+        if (targetType == float.class || targetType == Float.class) return Float.parseFloat(value);
+        if (targetType == boolean.class || targetType == Boolean.class) return Boolean.parseBoolean(value);
+        if (targetType == short.class || targetType == Short.class) return Short.parseShort(value);
+        if (targetType == byte.class || targetType == Byte.class) return Byte.parseByte(value);
+        if (targetType == char.class || targetType == Character.class) return value.length() > 0 ? value.charAt(0) : '\0';
+        // Enum support
+        if (targetType.isEnum()) {
+            @SuppressWarnings({"rawtypes", "unchecked"})
+            Class<? extends Enum> enumType = (Class<? extends Enum>) targetType;
+            return Enum.valueOf(enumType, value);
+        }
+        // Pas de conversion connue -> retourner la String brute
+        return value;
+    }
+
+    private Object getDefaultValueForPrimitive(Class<?> primitiveType) {
+        if (primitiveType == boolean.class) return false;
+        if (primitiveType == char.class) return '\0';
+        if (primitiveType == byte.class) return (byte) 0;
+        if (primitiveType == short.class) return (short) 0;
+        if (primitiveType == int.class) return 0;
+        if (primitiveType == long.class) return 0L;
+        if (primitiveType == float.class) return 0f;
+        if (primitiveType == double.class) return 0d;
+        return null;
     }
 
     private void customServe(HttpServletRequest req, HttpServletResponse res) throws IOException {
