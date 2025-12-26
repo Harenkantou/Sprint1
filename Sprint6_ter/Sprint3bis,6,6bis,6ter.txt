@@ -1,0 +1,153 @@
+
+
+Sprint 6 que notre prof avait annoncer au debut
+on fait un formulaire 
+et c'est la vue qu'on appelle directement et apres ce formulaire, balise form => a un attribut "action" et url associer avec controller qu'on met avec action(comme valeur)
+par exemple on a un formulaire "ajoutNouveauDepartement" et on va dire que c'est un simple html et dans les formulaires y'a une balise form, donc quand on clique sur le bouton 
+de soumission c'est dans cet url que le navigateur va, et ce url, quelque part par exemple on a un classe controller DeptController  qui a une methode save() ou ajouter() et cette 
+methode est associer a un url par exemple /dept/save et c'est cet url qu'on met comme valeur de action de la balise form de formulaire c'est-à-dire qu'apres le formulaire, on devrait
+pouvoir executer le save() dans DeptController,
+comment on recupere les données qu'on a saisi dans le formulaire pour etre disponible dans le controller sans faire(ou utiliser) de request.getParameter
+
+comment on fait si ça vient de formulaire et que ça doit etre disponible dans controller, tous les données saisies via formulaire ? comment ?
+
+3 solutions trouvés par 3autres élèves :
+=> 
+
+CE que notre prof disait au debut :
+le sprint 6 est divisé en 3 en fonction des réponses des autres :
+sprint6 simple ou sprint6
+sprint6-bis
+sprint6-ter
+
+sprint 6 simple ou sprint 6 {
+    
+        par exemple, dans un cas, ou on est dans une page de fiche => detail d'etudiant ou ...
+        c'est-à-dire que l'url : http//:.../etudiant/17 <= MapUrl
+        par exemple : /etudiant/{id}
+        et dans ce cas, on peut ecrire dans EtudiantController, on peut avoir par exemple get <= associer à l'url 
+        EtudiantController
+        @url("/etudiant/{id}")
+        get (int id) {
+
+        }
+        on devrait pouvoir recuperer directement le id concerné
+        le truc c'est qu'on peut pas, avec map et routes qu'il y a tous les urls, dire /etudiant/1 => associer à ce get, /etudiant/2 => associer à ce ...
+        donc pour se faire on fait le {id} et c'est l'accolade qui est placé dans le clé de la map avec l'url 
+        quand on l'appelera, l'url => on fait /etudiant/17 => on devrait savoir cela 
+        donc 'y'a une modification qui devrait etre apporter pour que ça puisse marcher 
+        quand on voit un accolade dans l'url, 
+        /etudiant/{id} <= MapUrl => arrive dans notre FrontServlet, si y'a ça dans le map des urls alors on le prend si y'a pas on dit juste qu'on le connait pas
+        mais dans le cas de notre code maintenant, si on veut le traiter, il va toujours dire, qu'il ne connait pas l'url car c'est le {id} qu'on place dans la clé donc on doit ajouter :
+        dans le code(FrontServlet) y'a deja, si il arrive à trouver l'url et que c'est directe exacte dedans => resulter => OK c'est correcte 
+        mais si il ne le trouve pas, on doit d'abord ajouter une logique mais pas directement un throws exception => NOT FOUND, on doit verifier s'il y a match avec
+        dans l'url
+        et pour l'algo, notre prof ne sait pas encore qui est le meilleure, mais il a proposé par exemple {
+            -on prends tous ceux qui ont des {} dans la clé et on regarde un par un s'il y'a match avec, et s'il y'a match avec, pas besoin de faire request.getParam, on fait id, on prends juste 
+            de la bas, la valeur de l'url "17" et quand on appele get, c'est directement get17 qui est appelé:
+            @url("/etudiant/{id}")
+            get (int id) {
+
+            }
+        }
+        au debut, on fait null la valeur de  l'argument int id, car quand on l'invoque, on a besoin de declarer une valeur
+        avant la methode de notre controller n'avait pas besoin d'argument, quand on fait l'argument et quand on fait l'invocation => on met par defaut l'argument dans un premier temps et ...suite en dessous de l'explication de la petite anomalie 
+    }
+
+    {
+        petite anomalie => par exemple c'est int identifiant que la personne a fait or ici c'est int id dans l'argument : get (int id) or l'identifiant c'est lui meme l'id {
+            si y'a un objectif de ce genre et qu'on arrive pas à l'atteindre => on s'inspire de spring boot vu que notre projet c'est un clonage du framework spring boot  
+            pour spring, il a un requestParam
+            c'est une annotation
+            get (@equestParam(int id) var1) => comprehension de notre prof de ceci => dans request, le getParameter a un variable id et mets le dans la 
+            variable var 1 qui est disponible dans ce method get
+
+            donc on peut utiliser cela :  get (@equestParam(int id) var1) <= peut avoir plusieurs params
+
+            utiliser si et quand les noms des variables sont differents
+            si c'est pareil, on l'utilise pas 
+
+            apres on prends et c'est ca qu'on appelle dans le get
+            Il dit d'abord "apres on peut faire(implémenter) ceci dans le bis" puis après il dit "meme pas encore bis car y'a encore 2methodes apres", celui qui fait requestParam en dessous
+            mais ce requestParam => si on fait  get (@equestParam(int id) var1, String var 2, int id) <= si dans request dans FrontServlet => et que y'a un nom de variable var 2 alors meme si y'a pas de requestParam 
+            c'est la valeur de ça qu'on met(dans la place de String var2) quand on appelle (par convention)
+            ce qu'on fait c'est qu'on regarde s'il y a argument => la methode appellé et si y'a, on regarde le nom de l'argument(le nom du params) et que si y'a dans le requestgetparameter qui a la meme valeur de nom que ça 
+            alors c'est directement la valeur de ça qu'on place quand on appellera
+            et le get (@equestParam(int id) var1, String var 2, int id) peut vraiment avoir plusieurs arguments ou params
+            et ceux qui ont le meme nom, alors c'est directement la valeur qui est placée
+            ceux qui ont pas le meme nom et qui a la presence d'annotation requestParam, alors on prends ce qu'il a met le getParameterId si y'a valeur et c'est ca qu'on mets dans le var 1
+            le var 2 dans le get (@equestParam(int id) var1, String var 2, int id) peut etre de type date, double par exemple, alors comment on fait la conversion ? parce que le type qui arrive
+            dans le request est toujours String, donc pour faire la conversion on peut utiliser des librairies au lieu d'encore code le code à la main
+        }
+    }
+    
+Puis apres il a dit
+    Sprint 6 :
+    .permettre  l'url avec le {} genre quels sont les modifications à apporter et les codes à ajouter par exemple sans encore recuperer le variable, on fait juste si on fais /{25} alors c'est arriver dans ce get meme si la valeur de l'id arrivé n'est pas encore 25, creation de l'url pour que le traitement de l'accolade puisse fonctionner parce qu'on en besoin quand on fait get par exemple getdetails par exemple et apres quand le nom est pareil => on fait en sorte que ca puisse marcher
+    .pour le cas ou y'a l'{} et que le nom est pareil => on prends la valeur et on l'appelle
+    .annotation ou le get (@equestParam(int id) var1, String var 2, int id) quand l'argument est par exemple different genre int identifiant et non int id
+
+    donc en gros pour le sprint6, il a decider de tous diviser en 4: suite de sprint 3 => sprint3-bis, sprint6, sprint6-bis et sprint6-ter {
+        Il a changer en Sprint3-bis ceci :
+            -si on place ce genre d'url => /etudiant/{id}, on devrait etre capable de repondre ça et non lever une exception qu'on connait pas l'url, y'a pas encore d'envoi de donnée, et quand on met l'{} et que ceci dit n'importe quel valeur placé c'est cette methode qui repond :
+                @url("/etudiant/{id}")
+                get (int id) {
+
+                }
+            et la valeur est dynamique et non fixé car c'est impossible à etre fixer dans ce cas, puis on met null quand on invoque le get car ca resulte erreur si on invoque sans arguments
+            determination url avec {}
+
+        Sprint 6 simple:
+            cas 2 :
+                -si le nom des variables venant de request.getparameter et le nom des parametres dans la methode dans le controller sont les memes => alors on matche, les valeurs venant de parameter qu'on place dans l'ordre dans le parametres quand on appelera la methode, si y'a var2 alors c'est directe request.getParameter(var2) qu'on met
+                pour ce qu'il y a pas, on envoie toujours valeur null, mais pour les arguments qui ont ce requestParam(annotation à créer) => on verifie si il y a le variable dans le request.getParameter et c'est ça qu'on place, meme si y'a pas de var1 dans request.getParameter mais a "id" c'est-à-dire request.getParameter(id) alors
+                c'est l'id qu'on place sur le var1
+                par exemple dedans y'a int id et l'id se place ici et ici car on suppose que l'id est dans le getParameter et c'est directement ça qui est dedans, par exemple id = 20 et var2 y'a pas:
+                get (@equestParam(int id) 20, null, 20)
+
+        Sprint 6-bis
+            cas 3: si y'a requestParam => annotation
+
+        Sprint6-ter
+            -l'{} devrait etre su, les valeurs sur url qui sont placés, c'est avec url qu'on le prends et non request.getParameter, ou se trouve l'{}
+                on prends pas avec request.getParameter
+                ceci est devenu le sprint 6-ter car on le prends pas avec request.getParameter et vaut mieux que ça soit ceux qui sont pris avec request.getParameter qui sont sprint3-bis et sprint6 simple et sprint 6-bis car ça c'est prise avec url
+                requestParam(annotation)
+            cas {} => recuperer url les variables, les valeurs et non avec request.getParameter
+    }
+}
+
+encore recapitulation :
+    sprint3-bis :
+        nous permet de prendre en compte qu'il peut avoir ce genre de truc(annotation) ou url je sais plus : det/{id} 
+        parce que le {id} est possible de changer et c'est tres difficile de faire la commbinaison dans la map du coup pour se faire on met un {}
+        que si par exemple dept/{id}, par exemple : getDetail(id) dans le DeptController
+
+    sprint6 simple : si le nom des attributs dans getParameter et le nom des arguments ou parametres dans la methode du Controller sontles memes => matchent
+        quand on appelle getDetail, dans le FrontServlet dans le framework, invoquer cela, devrait mettre valeur parametre dans la methode et des qu'y a des noms 
+        similaires
+        et que quelque part on ait mis une formulaire :
+            "un_champ"
+            input name="id"
+        et c'est directement n'importe quel valeur qu'on a saisi, qu'on appelle avec ça avec la reflection dans FrontServlet
+        les arguments de la fonction peut etre plusieurs et non un seul, et ceux qui sont pareils avec les noms, matchent directes et on set directe
+        et c'est ça qu'on appelle avec, quand on l'appelle, on fait d'abord null au debut et apres on remplit petit à petit
+
+    sprint6-bis:
+        -pour ceux qui sont pas pareils avec les noms
+        -on peut faire : getDetail(id, var2) or dans le getParameter n'a pas var2 mais var1 par exemple, donc on créer une annotation => RequestParam("var1") et on lui dit var1
+        et ça veut dire que si on fait requet.getParameter et qu'y a var1 alors sa vaeur est placé sur la place de var2
+        getDetail(id, var2)
+                    |_>RequestParam("var1")
+
+    sprint6-ter:
+        -on revient traiter l'accolade {} et le truc a deja {}, on prends l'id dans le navigateur avec url et non request.getParameter, donc ceci quand on l'appelera vraiment
+        sera comme : dept/17 et ce 17 sera dans le id <= si les noms sont pareils, {id} et dans la signature de la methode dans controller y'a id quelque part et on prends <=UTILISATION 
+        DE RAEGEXX <= pour mettre la valeur
+
+pouvez vous egalement repondre a cette question, d'apres vous pour faire celui du sprint3-bis, est ce que je devrais creer la branche sprint3-bis en partant de main genre dans la nouvelle branche créer sprint3-bis 
+y'a tous ce qui a dans main, sachant que dans main y'a deja les codes de sprint1 à sprint5 
+ou bien je dois creer le sprint3-bis en se basant du sprint3 juste avant meme si chronologiquement ils ne sont plus en succession dans les pull request que notre prof regrdera puisque sprint3-bis sera derriere
+sprint5 
+ou bien je dois quand meme le creer en se basant sur main et qu'il a tous les codes comme main ou sprint6(suite logique de sprint5) parce que dans ce qui doit etre fait dedans y'a des choses quiont besoin de ce qu'y a maintenant dans main ?
+
