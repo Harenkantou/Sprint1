@@ -1,0 +1,34 @@
+Sprint 4-bis {
+    dans framework, on cree une class, on va dire que le nom est ModelView et dedans on mettra un attribut view(chaine de caractere), 
+    et on peut avoir une method dans controller => retourner de type ModelView associer @url et ce method est dedans, et on peut cree un instance de ModelView
+    @
+    public ModelView ..
+        ModelView mv = new ....
+        mv.setView("test.jsp")
+
+    dans le projet de test
+
+    on cree test.jsp on mettra ce qu'on veut, et pour savoir que ca marche ou pas, quand on appelle urn => on arrive dedans
+
+    dans FrontServelt apres avoir fini l'invocation = on teste valeur type, valeur de retour, si c'est String => appele printwriter
+    si c'est de type ModelView => on appele le getter de View car on sait que son attribut est View, on obtient cela
+    puis on appele Dispatcher et on mettra la bas le "View"
+
+    valeur de retour obtenu avant invocation
+
+    executer et depend du type retour => le comportement du framework
+    si c'est type String, on fais printwriter et on affiche seulement 
+    si c'est type ModelView, on appelle encore une fois la methode getView et on recupere et ca doit etre String et c'est ce qu'on place sur le Dispatcher
+
+    ce qu'on nous demande de faire c'est quelque chose qui est trouvé dans Spring, mais juste Spring model et view seulement mais ici c'est un peu comme du Spring MVC
+
+    le FrontServelt => c'est dedans qu'on teste, la valeur de retour de la methode, soit printwriter soit Dispatcher
+    mais avec le test, c'est dans le test qu'on fais une methode de controller, l'un retourne String et une autre retourne ModelView et la classe ModelView sera deja creer dans 
+    Framework 
+    c'est pourquoi les deux projets doivent etre vraiment separer(projet de creation de framework et projet de test) et c'est JAR qui sort de Framework et qui est placer dans le librairie
+    du test car le test est une applcition web et le framework est une simple application car c'est le JAR son output
+
+URL et class method
+    
+
+}
