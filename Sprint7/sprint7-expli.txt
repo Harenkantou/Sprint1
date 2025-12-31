@@ -1,0 +1,79 @@
+approche d'un eleve :
+a partir annotation,
+annotation a creer
+par ex: getMapping => method get ou postMapping => method get 
+et on en enregistre dans le controller qu'on a creer
+et enregistrer dans un servlet context et c'est par rapport à cela qu'on regardera le methode d'action asssocier a un url
+coté developpe : pas grand chose à ajouter
+
+coté framework : => ajout de 2 annotations(celui de maintenant ca peut toujours que ca soit get ou post) mais il faut faire en sorte que si on fait juste 
+getMapping => get seulement et postMapping et post seulement
+le nom des annotations peuvent etre getUrl et postUrl
+ creer annotation, mais apart cela, quels sont les modifications a modifier pour atteindre l'objectif :
+ utilisation de servletContextListener, et enregistre dans le mapping, ....
+ 2controller qu'il y a les classes
+
+ enregistrer url et dans classes mapp=> ou y'avait path(url) et quel est le controller associer à ce url 
+ et ca depend de la mapp, qu'on sait que la methode 
+ clé map => path 
+ avant la clé de la map c'etait string mais il a changer
+
+autre approche d'un eleve :
+creation de 2annotation egalement mais pour scan => 
+si c'est postMapping => placer dans servletContext autre variable
+si c'est getMapping => 
+
+autre approche d'un eleve :
+on a un map et la clé de la map=> url, map devient map d'unn map, et ...
+clé 1er url et clé 2eme methode(get, post) et dans FrontServlet prend cela en faisant requst.getMethod
+utilise doGet doPost de FrontServlet
+
+autre approche d'un eleve :
+pour eviter de creer un objet en tant que type, concaterner avec string de base , get ou post ?
+
+autre approche d'un eleve :
+hashmap, son clé => route, value => meethod, method et classe
+on regarde si c'est class => on verifie si match => url 
+
+les approches des autres eleves sont pas tres claires parce que j'ai peiné à comprendre et retanscrire le vocal parce que c'est en ecoutant 
+l'enregistrement vocal de notre cours que j'ai ecrit tous ces notes du coup
+
+
+celui du prof :
+on a toujours le map
+sa clé => toujorus url mais sa valeur au lieu de class Method devient list de class Method
+pour nous 1url possible possede 2 methodes
+dans le controller coté developper, on a 2methodes, M1 associer avec url1 mais methode GET et M2 associer avec url2 mais methode POst, donc 1url depend de methode qu'on fait 
+pour savoir si c'est M1 qu'on appele ou M2 qu'on appele, si c'est M1 => GET, M2 => POst
+c'est l'objectif et c'est exactement qu'on ecrit sur le map
+1url => la clé ne change pas 
+et dans objet au lieu de faire 1 class meethod devient instance de 2 classe method càd liste, instance d'une class method => si c'est get (ajout d'une method dans la class method, ajout d'attribut) => voici la
+class et method  => M1
+et si c'est POST => M2 => voici 
+
+notre class => classMethod qu'on a remplit, voici le nom de la classe, voici la methode => ajout d'une nouvelle attribut => method (devient 2methods), l'un est fonction et l'autre est getPost,etc..
+et apres on matche toujours les methodes venant de  requet.getMethod()  avec les methodes de l'HHTP => nom => HttpMethod dans la class method
+framework seulement qui change => annotation ne change pas 
+ajouter httpMethod dans la class method, son valeur => get ou post et quand on scanne le controller dans FrontServlet et quand c'est le moment de l'ajouter dans la map, on verifier les methodes avec request.getMethod() et on
+settera avec l'attribura du nouvel ajout, et pour l'url => devrait ouvrir, avant de dire qu'on supporte pas l'url => on voit l'url mais le fait qu'on voit qu'il existe dans la map n'est plus suffisant on devrait aussi regarder 
+la methode, on doit regarder si on fait seulement @url(equivalent de requestMapping) et ca devrait toujours pouvoir marcher            
+on devrait pouvoir regarder le traitement de cela
+mais si ca fait vraiment postMapping => OK
+getMapping => OK
+mais si on fait requestMapping => normalement ca devrait etre qu'un seul dans le Map, dans la liste c'est un seul dans le Map, => on pourra faire que c'est la premiere chose qu'il voit qu'il fait pour ceci                                                                
+
+classe => valeur de l'hashmap 
+
+meme url annoter mais methode different mais on dit voici method get et voici method post et il arrive vraiment a appeler les methodes
+tester avec postman
+
+objectif ne devrait pas changer :
+    -y'a url, avant y'avait un url et on savait quels sont les  controller et fonctions appelés
+    et maintenant, ajout d'un nouvel facteur, pas suelement url qu'on regarde mais egalement la methode parce que c'est ce qu'on obtient de l'annotation 
+    si avant c'etait url simple seulement annotation => ne change pas
+    mais si on fait getUrl alors on devrait considerer le get du coup on devrait savoir quel est la methode ou action dans le controller correspondant à appeler 
+
+je precise que c'est celui du professeur que j'aimerais qu'on implemente mais j'aimerais quand meme avant tous que vous m'expliquiez ce sprint 7 en general, que vous m'expliquiez 
+chacune des approches des eleves et l'approche de notre professeur avant l'implementation
+ou si vous avez un autre approche apart ceux declarer ci dessus j'aimerais que vous le dites,expliquiez et avec l'implementation egalement 
+nous sommes fortuite a la recherche d'approche toujours plus evolutive
