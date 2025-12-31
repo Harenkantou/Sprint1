@@ -1,0 +1,25 @@
+Objectif {
+    separer les methodes de requetes HTTP
+    jusque là, la methode dans controller est une methode d'action
+    et cette methode est associer à ce url... càd => avec tous les methodes de requetes HTTP que ca soit get ou post, les urls et les methodes devraient etre associer
+    toujours ramener avec sprint mvc
+    or dans sprint mvc y'a une possibilité de dire postMapping, getMapping et requestMapping
+    et le requestMapping c'est que ca soit post ou get, c'est toujours une seule chose qui le repond
+    pour getMapping => avec url, si c'est type get, alors c'est la methode correspondant 
+    mais si c'est type post c'est une autre methode qui repond
+    on devrait pouvoir rediger avec sprint mvc, 
+    on prends exemple avec ce que fait spring mvc de comment on a implementer cela, qu'est ce que fait l'annotation => requestMapping ou urlMapping, postMapping, getMapping
+
+    requestMapping => c'est deja l'url qu'on a deja fait jusqu'à maintenant
+    mais on doit ajouter getMapping et postMapping c'est-à-dire on devrait reflechir avec un facteur qui fait qu'on puisse identifier avec la methode et classe pour un url avec le type 
+    de la requete http, est ce que c'est get ou post
+    c'est a dire que si c'est getMapping qu'on lui annote et que c'est de type get => considerer 
+    si c'est post c'est autre chose 
+    c'est possible qu'il y ait deux urls pareilles
+    par exemple : /url/1
+    et que on dit que /url/1 est => de type get alors c'est cette methode qui repond 
+    mais si c'est type post => alors c'est cette methode qui repond
+}
+
+toujours 2 choses pour faire le comment :
+    -qu'est ce qui change dans le projet ou code framework et quels sont les instructions donnée aux developper pour atteindre l'objectif dans le projet de test et si il veut utiliser la fonctionnalité qu'on implemente
